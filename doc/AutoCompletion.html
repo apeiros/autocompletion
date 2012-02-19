@@ -1,0 +1,1452 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: AutoCompletion
+  
+    &mdash; Documentation by YARD 0.7.2
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '';
+  if (relpath != '') relpath += '/';
+</script>
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index (A)</a> &raquo; 
+    
+    
+    <span class="title">AutoCompletion</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: AutoCompletion
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">AutoCompletion</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/autocompletion.rb<span class="defines">,<br />
+  lib/autocompletion/version.rb</span>
+</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+AutoCompletion A binary search for prefix-matching is used to determine
+left- and right- boundary. This means even with 1_000_000 items, a maximum
+of 40 comparisons is required.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h3>Examples:</h3>
+    
+      <h4><div class='inline'><p>
+Autocomplete words
+</p>
+</div></h4>
+      <pre class="example code"><span class='id auto'>auto</span> <span class='op'>=</span> <span class='const'>AutoCompletion</span><span class='period'>.</span><span class='id words'>words</span><span class='lparen'>(</span><span class='qwords_beg'>%w[</span><span class='tstring_content'>foo</span><span class='words_sep'> </span><span class='tstring_content'>bar</span><span class='words_sep'> </span><span class='tstring_content'>baz</span><span class='words_sep'>]</span><span class='rparen'>)</span>
+<span class='id auto'>auto</span><span class='period'>.</span><span class='id complete'>complete</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>f</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'># =&gt; [&quot;foo&quot;]
+</span><span class='id auto'>auto</span><span class='period'>.</span><span class='id complete'>complete</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>b</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'># =&gt; [&quot;bar&quot;, &quot;baz&quot;]
+</span><span class='id auto'>auto</span><span class='period'>.</span><span class='id complete'>complete</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>z</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span> <span class='comment'># =&gt; []</span></pre>
+    
+      <h4><div class='inline'><p>
+Autocomplete objects by attributes
+</p>
+</div></h4>
+      <pre class="example code"><span class='const'>Person</span>  <span class='op'>=</span> <span class='const'>Struct</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='symbol'>:first_name</span><span class='comma'>,</span> <span class='symbol'>:last_name</span><span class='rparen'>)</span>
+<span class='id people'>people</span>  <span class='op'>=</span> <span class='lbracket'>[</span>
+  <span class='const'>Person</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Peter</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Parker</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
+  <span class='const'>Person</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Luke</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Skywalker</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
+  <span class='const'>Person</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Anakin</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Skywalker</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span>
+<span class='rbracket'>]</span>
+<span class='id auto'>auto</span>    <span class='op'>=</span> <span class='const'>AutoCompletion</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='id people'>people</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id person'>person</span><span class='op'>|</span>
+  <span class='lbracket'>[</span><span class='id person'>person</span><span class='period'>.</span><span class='id first_name'>first_name</span><span class='comma'>,</span> <span class='id person'>person</span><span class='period'>.</span><span class='id last_name'>last_name</span><span class='rbracket'>]</span>
+<span class='rbrace'>}</span>
+
+<span class='id auto'>auto</span><span class='period'>.</span><span class='id complete'>complete</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>P</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='comment'># =&gt; [#&lt;struct Person first_name=&quot;Peter&quot;, last_name=&quot;Parker&quot;&gt;]
+</span>
+<span class='id auto'>auto</span><span class='period'>.</span><span class='id complete'>complete</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>S</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='comment'># =&gt; [#&lt;struct Person first_name=&quot;Luke&quot;, last_name=&quot;Skywalker&quot;&gt;,
+</span><span class='comment'>#     #&lt;struct Person first_name=&quot;Anakin&quot;, last_name=&quot;Skywalker&quot;&gt;]
+</span>
+<span class='id auto'>auto</span><span class='period'>.</span><span class='id complete'>complete</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>S</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>L</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='comment'># =&gt; [#&lt;struct Person first_name=&quot;Luke&quot;, last_name=&quot;Skywalker&quot;&gt;]</span></pre>
+    
+  </div>
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+   
+    
+   
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="AutoCompletion/InvalidOrder.html" title="AutoCompletion::InvalidOrder (class)">InvalidOrder</a></span>
+    
+  
+</p>
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="Version-constant" class="">Version =
+          <div class="docstring">
+  <div class="discussion">
+    <p>
+The version of the gem
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div>
+        </dt>
+        <dd><pre class="code"><span class='const'>Gem</span><span class='op'>::</span><span class='const'>Version</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>0.0.1</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span></pre></dd>
+      
+    </dl>
+  
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#entities-instance_method" title="#entities (instance method)">- (Object) <strong>entities</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title readonly">readonly</span>
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+All stored entities.
+</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#map-class_method" title="map (class method)">+ (AutoCompletion) <strong>map</strong>(entities) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Map a list of entities to their keys.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#unordered_tuples-class_method" title="unordered_tuples (class method)">+ (AutoCompletion) <strong>unordered_tuples</strong>(entities) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Creates an AutoCompletion for an unordered array of the form
+[[&#8220;prefix&#8221;, value], …].
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#words-class_method" title="words (class method)">+ (AutoCompletion) <strong>words</strong>(words) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+An autocompletion for a list of words.
+</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#complete-instance_method" title="#complete (instance method)">- (Array) <strong>complete</strong>(*prefixes) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Returns an array of distinct entities matching the given prefixes.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#count_distinct_entitites-instance_method" title="#count_distinct_entitites (instance method)">- (Integer) <strong>count_distinct_entitites</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The number of distinct entities.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#count_distinct_prefixes-instance_method" title="#count_distinct_prefixes (instance method)">- (Integer) <strong>count_distinct_prefixes</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The number of distinct prefixes.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#empty%3F-instance_method" title="#empty? (instance method)">- (Boolean) <strong>empty?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Returns true if there are no prefixes stored in this AutoCompletion
+instance.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (AutoCompletion) <strong>initialize</strong>(entities, force = false) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+A new instance of AutoCompletion.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#range_search-instance_method" title="#range_search (instance method)">- (nil, Range&lt;Integer&gt;) <strong>range_search</strong>(prefix) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Returns nil if AutoCompletion#empty? Returns -1..-1 if the prefix is
+smaller than the smallest key Returns
+AutoCompletion#size..AutoCompletion#size if the prefix is bigger than the
+biggest key Returns the range for all matched keys and values otherwise.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#size-instance_method" title="#size (instance method)">- (Integer) <strong>size</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The number of prefixes stored.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#valid%3F-instance_method" title="#valid? (instance method)">- (Boolean) <strong>valid?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Returns true if the prefixes are in a valid order.
+</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <p class="signature first" id="initialize-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="AutoCompletion (class)">AutoCompletion</a></span></tt>) <strong>initialize</strong>(entities, force = false) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+A new instance of AutoCompletion
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>entities</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;Array&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+A flat array of the form [prefix1, value1, prefix2, value2, …] containing
+all prefixes and their corresponding value.
+</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>force</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>
+If force is set to true, the order of entities is not verified. Use this
+only if you know what you&#8217;re doing.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="AutoCompletion/InvalidOrder.html" title="AutoCompletion::InvalidOrder (class)">InvalidOrder</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+  <h3>See Also:</h3>
+  <ul class="see">
+    
+      <li>AutoCompletion::map</li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+84
+85
+86
+87</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/autocompletion.rb', line 84</span>
+
+<span class='kw'>def</span> <span class='id initialize'>initialize</span><span class='lparen'>(</span><span class='id entities'>entities</span><span class='comma'>,</span> <span class='id force'>force</span><span class='op'>=</span><span class='kw'>false</span><span class='rparen'>)</span>
+  <span class='ivar'>@entities</span> <span class='op'>=</span> <span class='id entities'>entities</span>
+  <span class='id raise'>raise</span> <span class='const'>InvalidOrder</span><span class='period'>.</span><span class='id new'>new</span> <span class='kw'>unless</span> <span class='id force'>force</span> <span class='op'>||</span> <span class='id valid?'>valid?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <span id="entities-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="entities-instance_method">
+  
+    - (<tt>Object</tt>) <strong>entities</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+All stored entities. A flat array of the form [prefix1, value1, prefix2,
+value2, …]
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+74
+75
+76</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/autocompletion.rb', line 74</span>
+
+<span class='kw'>def</span> <span class='id entities'>entities</span>
+  <span class='ivar'>@entities</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="map-class_method">
+  
+    + (<tt><span class='object_link'><a href="" title="AutoCompletion (class)">AutoCompletion</a></span></tt>) <strong>map</strong>(entities) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Map a list of entities to their keys. The block should return an array of
+valid prefixes for the yielded entity.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="AutoCompletion (class)">AutoCompletion</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+Map a list of entities to their keys. The block should return an array of
+valid prefixes for the yielded entity.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+58
+59
+60
+61
+62
+63
+64
+65</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/autocompletion.rb', line 58</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='id entities'>entities</span><span class='rparen'>)</span>
+  <span class='id mapped'>mapped</span> <span class='op'>=</span> <span class='id entities'>entities</span><span class='period'>.</span><span class='id flat_map'>flat_map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id entity'>entity</span><span class='op'>|</span>
+    <span class='id keys'>keys</span> <span class='op'>=</span> <span class='kw'>yield</span><span class='lparen'>(</span><span class='id entity'>entity</span><span class='rparen'>)</span>
+    <span class='id keys'>keys</span><span class='period'>.</span><span class='id flat_map'>flat_map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id key'>key</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id entity'>entity</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id unordered_tuples'>unordered_tuples</span><span class='lparen'>(</span><span class='id mapped'>mapped</span><span class='period'>.</span><span class='id each_slice'>each_slice</span><span class='lparen'>(</span><span class='int'>2</span><span class='rparen'>)</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="unordered_tuples-class_method">
+  
+    + (<tt><span class='object_link'><a href="" title="AutoCompletion (class)">AutoCompletion</a></span></tt>) <strong>unordered_tuples</strong>(entities) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Creates an AutoCompletion for an unordered array of the form
+[[&#8220;prefix&#8221;, value], …].
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="AutoCompletion (class)">AutoCompletion</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+Creates an AutoCompletion for an unordered array of the form
+[[&#8220;prefix&#8221;, value], …].
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+69
+70
+71</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/autocompletion.rb', line 69</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id unordered_tuples'>unordered_tuples</span><span class='lparen'>(</span><span class='id entities'>entities</span><span class='rparen'>)</span>
+  <span class='id new'>new</span><span class='lparen'>(</span><span class='id entities'>entities</span><span class='period'>.</span><span class='id sort_by'>sort_by</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:first</span><span class='rparen'>)</span><span class='period'>.</span><span class='id flatten'>flatten</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="words-class_method">
+  
+    + (<tt><span class='object_link'><a href="" title="AutoCompletion (class)">AutoCompletion</a></span></tt>) <strong>words</strong>(words) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+An autocompletion for a list of words.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="AutoCompletion (class)">AutoCompletion</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+An autocompletion for a list of words.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+51
+52
+53</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/autocompletion.rb', line 51</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id words'>words</span><span class='lparen'>(</span><span class='id words'>words</span><span class='rparen'>)</span>
+  <span class='id unordered_tuples'>unordered_tuples</span><span class='lparen'>(</span><span class='id words'>words</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id word'>word</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id word'>word</span><span class='comma'>,</span> <span class='id word'>word</span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="complete-instance_method">
+  
+    - (<tt>Array</tt>) <strong>complete</strong>(*prefixes) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Returns an array of distinct entities matching the given prefixes.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>prefixes</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+A list of prefixes to match. All given prefixes must be matched.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+Returns an array of distinct entities matching the given prefixes.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/autocompletion.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id complete'>complete</span><span class='lparen'>(</span><span class='op'>*</span><span class='id prefixes'>prefixes</span><span class='rparen'>)</span>
+  <span class='comment'># short-cut
+</span>  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id empty?'>empty?</span> <span class='op'>||</span> <span class='id prefixes'>prefixes</span><span class='period'>.</span><span class='id any?'>any?</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id word'>word</span><span class='op'>|</span>
+    <span class='id word'>word</span> <span class='op'>&lt;</span> <span class='ivar'>@entities</span><span class='period'>.</span><span class='id first'>first</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span><span class='id word'>word</span><span class='period'>.</span><span class='id size'>size</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='id word'>word</span> <span class='op'>&gt;</span> <span class='ivar'>@entities</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span><span class='id word'>word</span><span class='period'>.</span><span class='id size'>size</span><span class='rbracket'>]</span>
+  <span class='rbrace'>}</span>
+
+  <span class='id slices'>slices</span> <span class='op'>=</span> <span class='id prefixes'>prefixes</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id word'>word</span><span class='op'>|</span> <span class='id range_search'>range_search</span><span class='lparen'>(</span><span class='id word'>word</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
+  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id slices'>slices</span><span class='period'>.</span><span class='id include?'>include?</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span> <span class='comment'># short-cut
+</span>
+  <span class='id result'>result</span> <span class='op'>=</span> <span class='ivar'>@entities</span><span class='lbracket'>[</span><span class='id slices'>slices</span><span class='period'>.</span><span class='id pop'>pop</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id each_slice'>each_slice</span><span class='lparen'>(</span><span class='int'>2</span><span class='rparen'>)</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:last</span><span class='rparen'>)</span><span class='period'>.</span><span class='id uniq'>uniq</span>
+  <span class='id slices'>slices</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id slice'>slice</span><span class='op'>|</span>
+    <span class='id result'>result</span> <span class='op'>&amp;=</span> <span class='ivar'>@entities</span><span class='lbracket'>[</span><span class='id slice'>slice</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id each_slice'>each_slice</span><span class='lparen'>(</span><span class='int'>2</span><span class='rparen'>)</span><span class='period'>.</span><span class='id map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:last</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='id result'>result</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="count_distinct_entitites-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>count_distinct_entitites</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The number of distinct entities
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+The number of distinct entities
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+111
+112
+113
+114
+115
+116
+117
+118</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/autocompletion.rb', line 111</span>
+
+<span class='kw'>def</span> <span class='id count_distinct_entitites'>count_distinct_entitites</span>
+  <span class='id result'>result</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='ivar'>@entities</span><span class='period'>.</span><span class='id each_slice'>each_slice</span><span class='lparen'>(</span><span class='int'>2</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id value'>value</span><span class='op'>|</span>
+    <span class='id result'>result</span><span class='lbracket'>[</span><span class='id value'>value</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>true</span>
+  <span class='kw'>end</span>
+
+  <span class='id result'>result</span><span class='period'>.</span><span class='id size'>size</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="count_distinct_prefixes-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>count_distinct_prefixes</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The number of distinct prefixes
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+The number of distinct prefixes
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+121
+122
+123
+124
+125
+126
+127
+128</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/autocompletion.rb', line 121</span>
+
+<span class='kw'>def</span> <span class='id count_distinct_prefixes'>count_distinct_prefixes</span>
+  <span class='id result'>result</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='ivar'>@entities</span><span class='period'>.</span><span class='id each_slice'>each_slice</span><span class='lparen'>(</span><span class='int'>2</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id key'>key</span><span class='comma'>,</span> <span class='id value'>value</span><span class='op'>|</span>
+    <span class='id result'>result</span><span class='lbracket'>[</span><span class='id key'>key</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>true</span>
+  <span class='kw'>end</span>
+
+  <span class='id result'>result</span><span class='period'>.</span><span class='id size'>size</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="empty?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>empty?</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Returns true if there are no prefixes stored in this AutoCompletion
+instance.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+Returns true if there are no prefixes stored in this AutoCompletion
+instance.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+100
+101
+102</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/autocompletion.rb', line 100</span>
+
+<span class='kw'>def</span> <span class='id empty?'>empty?</span>
+  <span class='ivar'>@entities</span><span class='period'>.</span><span class='id empty?'>empty?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="range_search-instance_method">
+  
+    - (<tt>nil</tt>, <tt>Range&lt;Integer&gt;</tt>) <strong>range_search</strong>(prefix) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Returns nil if AutoCompletion#empty? Returns -1..-1 if the prefix is
+smaller than the smallest key Returns
+AutoCompletion#size..AutoCompletion#size if the prefix is bigger than the
+biggest key Returns the range for all matched keys and values otherwise
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>, <tt>Range&lt;Integer&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+Returns nil if AutoCompletion#empty? Returns -1..-1 if the prefix is
+smaller than the smallest key Returns
+AutoCompletion#size..AutoCompletion#size if the prefix is bigger than the
+biggest key Returns the range for all matched keys and values otherwise
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/autocompletion.rb', line 157</span>
+
+<span class='kw'>def</span> <span class='id range_search'>range_search</span><span class='lparen'>(</span><span class='id prefix'>prefix</span><span class='rparen'>)</span>
+  <span class='id prefix_size'>prefix_size</span>   <span class='op'>=</span> <span class='id prefix'>prefix</span><span class='period'>.</span><span class='id size'>size</span>
+  <span class='id length'>length</span>        <span class='op'>=</span> <span class='id size'>size</span><span class='lparen'>(</span><span class='rparen'>)</span>
+  <span class='id found'>found</span>         <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='id left'>left</span>          <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id right'>right</span>         <span class='op'>=</span> <span class='id length'>length</span><span class='op'>-</span><span class='int'>1</span>
+  <span class='id found'>found</span>         <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='id max_exc_right'>max_exc_right</span> <span class='op'>=</span> <span class='id length'>length</span>
+
+  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id empty?'>empty?</span>
+  <span class='kw'>return</span> <span class='op'>-</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span> <span class='kw'>if</span> <span class='ivar'>@entities</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span><span class='id prefix_size'>prefix_size</span><span class='rbracket'>]</span> <span class='op'>&gt;</span> <span class='id prefix'>prefix</span> <span class='comment'># prefix is smaller than smallest value
+</span>  <span class='kw'>return</span> <span class='id length'>length</span><span class='op'>..</span><span class='id length'>length</span> <span class='kw'>if</span> <span class='ivar'>@entities</span><span class='lbracket'>[</span><span class='op'>-</span><span class='int'>2</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span><span class='id prefix_size'>prefix_size</span><span class='rbracket'>]</span> <span class='op'>&lt;</span> <span class='id prefix'>prefix</span> <span class='comment'># prefix is bigger than biggest value
+</span>
+  <span class='comment'># binary search for smallest index
+</span>  <span class='comment'># mark biggest right that include prefix, and biggest mark that doesn't include prefix
+</span>  <span class='kw'>while</span><span class='lparen'>(</span><span class='id left'>left</span><span class='op'>&lt;</span><span class='id right'>right</span><span class='rparen'>)</span>
+    <span class='id index'>index</span>     <span class='op'>=</span> <span class='lparen'>(</span><span class='id left'>left</span><span class='op'>+</span><span class='id right'>right</span><span class='rparen'>)</span><span class='op'>&gt;&gt;</span><span class='int'>1</span>
+    <span class='id cmp_value'>cmp_value</span> <span class='op'>=</span> <span class='ivar'>@entities</span><span class='period'>.</span><span class='id at'>at</span><span class='lparen'>(</span><span class='id index'>index</span><span class='op'>&lt;&lt;</span><span class='int'>1</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span><span class='id prefix_size'>prefix_size</span><span class='rbracket'>]</span>
+    <span class='kw'>case</span> <span class='id cmp_value'>cmp_value</span> <span class='op'>&lt;=&gt;</span> <span class='id prefix'>prefix</span>
+      <span class='kw'>when</span> <span class='op'>-</span><span class='int'>1</span> <span class='kw'>then</span>
+        <span class='id left'>left</span>          <span class='op'>=</span> <span class='id index'>index</span><span class='op'>+</span><span class='int'>1</span>
+      <span class='kw'>when</span> <span class='int'>1</span> <span class='kw'>then</span>
+        <span class='id right'>right</span>         <span class='op'>=</span> <span class='id index'>index</span>
+        <span class='id max_exc_right'>max_exc_right</span> <span class='op'>=</span> <span class='id right'>right</span>
+      <span class='kw'>else</span> <span class='comment'># 0
+</span>        <span class='id right'>right</span>         <span class='op'>=</span> <span class='id index'>index</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='ivar'>@entities</span><span class='period'>.</span><span class='id at'>at</span><span class='lparen'>(</span><span class='id left'>left</span><span class='op'>&lt;&lt;</span><span class='int'>1</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span><span class='id prefix_size'>prefix_size</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='id prefix'>prefix</span>
+  <span class='id final_left'>final_left</span> <span class='op'>=</span> <span class='id left'>left</span>
+
+  <span class='comment'># binary search for biggest index
+</span>  <span class='id right'>right</span> <span class='op'>=</span> <span class='id max_exc_right'>max_exc_right</span><span class='op'>-</span><span class='int'>1</span>
+  <span class='kw'>while</span><span class='lparen'>(</span><span class='id left'>left</span><span class='op'>&lt;</span><span class='id right'>right</span><span class='rparen'>)</span>
+    <span class='id index'>index</span>     <span class='op'>=</span> <span class='lparen'>(</span><span class='id left'>left</span><span class='op'>+</span><span class='id right'>right</span><span class='rparen'>)</span><span class='op'>&gt;&gt;</span><span class='int'>1</span>
+    <span class='id cmp_value'>cmp_value</span> <span class='op'>=</span> <span class='ivar'>@entities</span><span class='period'>.</span><span class='id at'>at</span><span class='lparen'>(</span><span class='id index'>index</span><span class='op'>&lt;&lt;</span><span class='int'>1</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span><span class='id prefix_size'>prefix_size</span><span class='rbracket'>]</span>
+    <span class='kw'>if</span> <span class='id cmp_value'>cmp_value</span> <span class='op'>&gt;</span> <span class='id prefix'>prefix</span> <span class='kw'>then</span>
+      <span class='id right'>right</span> <span class='op'>=</span> <span class='id index'>index</span>
+    <span class='kw'>else</span>
+      <span class='id left'>left</span> <span class='op'>=</span> <span class='id index'>index</span><span class='op'>+</span><span class='int'>1</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='id final_right'>final_right</span> <span class='op'>=</span> <span class='id right'>right</span>
+  <span class='id final_right'>final_right</span> <span class='op'>-=</span> <span class='int'>1</span> <span class='kw'>unless</span> <span class='ivar'>@entities</span><span class='period'>.</span><span class='id at'>at</span><span class='lparen'>(</span><span class='id right'>right</span><span class='op'>&lt;&lt;</span><span class='int'>1</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span><span class='id prefix_size'>prefix_size</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='id prefix'>prefix</span>
+
+  <span class='kw'>return</span> <span class='lparen'>(</span><span class='id final_left'>final_left</span><span class='op'>&lt;&lt;</span><span class='int'>1</span><span class='rparen'>)</span><span class='op'>..</span><span class='lparen'>(</span><span class='lparen'>(</span><span class='id final_right'>final_right</span><span class='op'>&lt;&lt;</span><span class='int'>1</span><span class='rparen'>)</span><span class='op'>+</span><span class='int'>1</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="size-instance_method">
+  
+    - (<tt>Integer</tt>) <strong>size</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The number of prefixes stored. Note that the same prefix can occur multiple
+times.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+The number of prefixes stored. Note that the same prefix can occur multiple
+times.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+106
+107
+108</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/autocompletion.rb', line 106</span>
+
+<span class='kw'>def</span> <span class='id size'>size</span>
+  <span class='ivar'>@entities</span><span class='period'>.</span><span class='id size'>size</span><span class='op'>&gt;&gt;</span><span class='int'>1</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="valid?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>valid?</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Returns true if the prefixes are in a valid order.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+Returns true if the prefixes are in a valid order.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+91
+92
+93
+94
+95
+96</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/autocompletion.rb', line 91</span>
+
+<span class='kw'>def</span> <span class='id valid?'>valid?</span>
+  <span class='ivar'>@entities</span><span class='period'>.</span><span class='id each_slice'>each_slice</span><span class='lparen'>(</span><span class='int'>2</span><span class='rparen'>)</span><span class='period'>.</span><span class='id each_cons'>each_cons</span><span class='lparen'>(</span><span class='int'>2</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='lparen'>(</span><span class='id a'>a</span><span class='comma'>,</span><span class='id _'>_</span><span class='rparen'>)</span><span class='comma'>,</span><span class='lparen'>(</span><span class='id b'>b</span><span class='comma'>,</span><span class='id _'>_</span><span class='rparen'>)</span><span class='op'>|</span>
+    <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>unless</span> <span class='id a'>a</span> <span class='op'>&lt;=</span> <span class='id b'>b</span>
+  <span class='kw'>end</span>
+  <span class='kw'>true</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Sun Feb 19 12:28:38 2012 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.7.2 (ruby-1.9.2).
+</div>
+
+  </body>
+</html>
