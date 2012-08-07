@@ -24,7 +24,7 @@ require 'autocompletion/version'
 #       Person.new("Luke", "Skywalker"),
 #       Person.new("Anakin", "Skywalker"),
 #     ]
-#     auto    = AutoCompletion.map(people) { |person|
+#     auto    = AutoCompletion.map_keys(people) { |person|
 #       [person.first_name, person.last_name]
 #     }
 #
@@ -53,15 +53,26 @@ class AutoCompletion
   end
 
   # @return [AutoCompletion]
-  #   Map a list of entities to their keys. The block should return an array of valid
-  #   prefixes for the yielded entity.
-  def self.map(entities)
+  #   Map a list of entities to many of their attributes.
+  #   The block should return an array of strings which can be prefix-searched.
+  def self.map_keys(entities)
     mapped = entities.flat_map { |entity|
       keys = yield(entity)
       keys.flat_map { |key| [key, entity] }
     }
 
     unordered_tuples(mapped.each_slice(2))
+  end
+
+  # @return [AutoCompletion]
+  #   Map a list of entities to one its attributes.
+  #   The block should return string which can be prefix-searched.
+  def self.map_key(entities)
+    mapped = entities.flat_map { |entity|
+      [key, yield(entity)]
+    }
+
+    unordered_tuples(mapped)
   end
 
   # @return [AutoCompletion]
@@ -83,16 +94,15 @@ class AutoCompletion
   # @see AutoCompletion::words, AutoCompletion::map
   def initialize(entities, force=false)
     @entities = entities
-    raise InvalidOrder.new unless force || valid?
+    raise InvalidOrder unless force || valid?
   end
 
   # @return [Boolean]
   #   Returns true if the prefixes are in a valid order.
   def valid?
-    @entities.each_slice(2).each_cons(2) do |(a,_),(b,_)|
-      return false unless a <= b
-    end
-    true
+    @entities.each_slice(2).each_cons(2).all? { |(a,_),(b,_)|
+      a <= b
+    }
   end
 
   # @return [Boolean]
@@ -138,8 +148,12 @@ class AutoCompletion
       word < @entities.first[0,word.size] || word > @entities[-2][0,word.size]
     }
 
-    slices = prefixes.map { |word| range_search(word) }
-    return [] if slices.include?(nil) # short-cut
+    slices = prefixes.map { |word|
+      slice = range_search(word)
+      return [] unless slice # short-cut
+
+      slice
+    }
 
     result = @entities[slices.pop].each_slice(2).map(&:last).uniq
     slices.each do |slice|
@@ -168,7 +182,7 @@ class AutoCompletion
     return length..length if @entities[-2][0,prefix_size] < prefix # prefix is bigger than biggest value
 
     # binary search for smallest index
-    # mark biggest right that include prefix, and biggest mark that doesn't include prefix
+    # mark biggest right which includes prefix, and biggest mark that doesn't include prefix
     while(left<right)
       index     = (left+right)>>1
       cmp_value = @entities.at(index<<1)[0,prefix_size]

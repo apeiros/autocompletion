@@ -28,7 +28,7 @@ Usage
       Person.new("Luke", "Skywalker"),
       Person.new("Anakin", "Skywalker"),
     ]
-    auto    = AutoCompletion.map(people) { |person|
+    auto    = AutoCompletion.map_keys(people) { |person|
       [person.first_name, person.last_name]
     }
 
