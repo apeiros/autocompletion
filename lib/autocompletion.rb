@@ -215,4 +215,16 @@ class AutoCompletion
 
     return (final_left<<1)..((final_right<<1)+1)
   end
+
+  # @private
+  # @see Object#inspect
+  def inspect
+    sprintf "\#<%s:%x size: %d, unique: %d, %p..%p>",
+            self.class,
+            object_id>>1,
+            size,
+            count_distinct_prefixes,
+            @entities[0],
+            @entities[-2]
+  end
 end
