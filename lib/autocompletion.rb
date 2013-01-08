@@ -65,11 +65,11 @@ class AutoCompletion
   end
 
   # @return [AutoCompletion]
-  #   Map a list of entities to one its attributes.
+  #   Map a list of entities to one of its attributes.
   #   The block should return string which can be prefix-searched.
   def self.map_key(entities)
-    mapped = entities.flat_map { |entity|
-      [key, yield(entity)]
+    mapped = entities.map { |entity|
+      [yield(entity), entity]
     }
 
     unordered_tuples(mapped)
