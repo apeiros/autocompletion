@@ -9,5 +9,5 @@ end
 class AutoCompletion
 
   # The version of the gem
-  Version = Gem::Version.new("0.0.2")
+  Version = Gem::Version.new("0.0.3")
 end
