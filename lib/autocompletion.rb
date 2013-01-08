@@ -144,7 +144,7 @@ class AutoCompletion
   #   Returns an array of distinct entities matching the given prefixes.
   def complete(*prefixes)
     # short-cut
-    return [] if empty? || prefixes.any? { |word|
+    return [] if empty? || prefixes.empty? || prefixes.any? { |word|
       word < @entities.first[0,word.size] || word > @entities[-2][0,word.size]
     }
 
